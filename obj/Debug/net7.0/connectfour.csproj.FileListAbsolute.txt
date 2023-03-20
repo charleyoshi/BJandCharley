@@ -1,0 +1,15 @@
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/connectfour.csproj.AssemblyReference.cache
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/connectfour.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/connectfour.AssemblyInfoInputs.cache
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/connectfour.AssemblyInfo.cs
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/connectfour.csproj.CoreCompileInputs.cache
+/Users/tsang/Desktop/C#/connectfour/bin/Debug/net7.0/connectfour
+/Users/tsang/Desktop/C#/connectfour/bin/Debug/net7.0/connectfour.deps.json
+/Users/tsang/Desktop/C#/connectfour/bin/Debug/net7.0/connectfour.runtimeconfig.json
+/Users/tsang/Desktop/C#/connectfour/bin/Debug/net7.0/connectfour.dll
+/Users/tsang/Desktop/C#/connectfour/bin/Debug/net7.0/connectfour.pdb
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/connectfour.dll
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/refint/connectfour.dll
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/connectfour.pdb
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/connectfour.genruntimeconfig.cache
+/Users/tsang/Desktop/C#/connectfour/obj/Debug/net7.0/ref/connectfour.dll
