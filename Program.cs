@@ -32,23 +32,23 @@ namespace ConnectFour
             for (int i = 0; i < game.Board.GetLength(0); i++)
             {
                 Console.Write("|  ");
-                for (int k = 0; k < game.Board.GetLength(1); k++)
+                for (int j = 0; j < game.Board.GetLength(1); j++)
                 {
-                    if (game.Board[i, k] == 'X')
+                    if (game.Board[i, j] == 'X')
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write(game.Board[i, k]);
+                        Console.Write(game.Board[i, j]);
                         Console.ResetColor();
                     }
-                    else if (game.Board[i, k] == 'O')
+                    else if (game.Board[i, j] == 'O')
                     {
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.Write(game.Board[i, k]);
+                        Console.Write(game.Board[i, j]);
                         Console.ResetColor();
                     }
                     else
                     {
-                        Console.Write(game.Board[i, k]);
+                        Console.Write(game.Board[i, j]);
                     }
 
                     Console.Write("  ");
@@ -71,7 +71,9 @@ namespace ConnectFour
 
         public static void PrintTurn(List<Player> players, Model game)
         {
-            Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place your {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
+1            //Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place your {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
+             Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place your {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
+
         }
 
 

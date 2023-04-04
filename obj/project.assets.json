@@ -8,24 +8,25 @@
     "net7.0": []
   },
   "packageFolders": {
-    "/Users/tsang/.nuget/packages/": {}
+    "/Users/admin/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tsang/Desktop/C#/connectfour/connectfour.csproj",
+      "projectUniqueName": "/Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/connectfour.csproj",
       "projectName": "connectfour",
-      "projectPath": "/Users/tsang/Desktop/C#/connectfour/connectfour.csproj",
-      "packagesPath": "/Users/tsang/.nuget/packages/",
-      "outputPath": "/Users/tsang/Desktop/C#/connectfour/obj/",
+      "projectPath": "/Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/connectfour.csproj",
+      "packagesPath": "/Users/admin/.nuget/packages/",
+      "outputPath": "/Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/tsang/.nuget/NuGet/NuGet.Config"
+        "/Users/admin/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -59,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.102/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.202/RuntimeIdentifierGraph.json"
       }
     }
   }
