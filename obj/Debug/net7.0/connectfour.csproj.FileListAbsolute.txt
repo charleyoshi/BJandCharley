@@ -28,3 +28,18 @@
 /Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/obj/Debug/net7.0/connectfour.pdb
 /Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/obj/Debug/net7.0/connectfour.genruntimeconfig.cache
 /Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/obj/Debug/net7.0/ref/connectfour.dll
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/connectfour.csproj.AssemblyReference.cache
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/connectfour.GeneratedMSBuildEditorConfig.editorconfig
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/connectfour.AssemblyInfoInputs.cache
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/connectfour.AssemblyInfo.cs
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/connectfour.csproj.CoreCompileInputs.cache
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/connectfour.dll
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/refint/connectfour.dll
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/connectfour.pdb
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/bin/Debug/net7.0/connectfour
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/bin/Debug/net7.0/connectfour.deps.json
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/bin/Debug/net7.0/connectfour.runtimeconfig.json
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/bin/Debug/net7.0/connectfour.dll
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/bin/Debug/net7.0/connectfour.pdb
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/connectfour.genruntimeconfig.cache
+/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/Debug/net7.0/ref/connectfour.dll

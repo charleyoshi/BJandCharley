@@ -32,23 +32,23 @@ namespace ConnectFour
             for (int i = 0; i < game.Board.GetLength(0); i++)
             {
                 Console.Write("|  ");
-                for (int j = 0; j < game.Board.GetLength(1); j++)
+                for (int k = 0; k < game.Board.GetLength(1); k++)
                 {
-                    if (game.Board[i, j] == 'X')
+                    if (game.Board[i, k] == 'X')
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write(game.Board[i, j]);
+                        Console.Write(game.Board[i, k]);
                         Console.ResetColor();
                     }
-                    else if (game.Board[i, j] == 'O')
+                    else if (game.Board[i, k] == 'O')
                     {
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.Write(game.Board[i, j]);
+                        Console.Write(game.Board[i, k]);
                         Console.ResetColor();
                     }
                     else
                     {
-                        Console.Write(game.Board[i, j]);
+                        Console.Write(game.Board[i, k]);
                     }
 
                     Console.Write("  ");
@@ -57,7 +57,18 @@ namespace ConnectFour
             }
             Console.WriteLine("   1  2  3  4  5  6  7  ");
         }
-        // Todo:  PrintTurn, PrintWinner, PrintTie
+
+
+        public static void PrintWinner(IPlayer player)
+        {
+            Console.WriteLine($"Congratulations {player.PlayerName}, you won!");
+        }
+
+        public static void PrintTie()
+        {
+            Console.WriteLine("Game is a Tie!");
+        }
+
         public static string getName(int order)
         {
             Console.Write($"Enter Player {order}\'s name: ");
@@ -69,15 +80,36 @@ namespace ConnectFour
             return name;
         }
 
-        public static void PrintTurn(List<Player> players, Model game)
+        public static void PrintTurn(List<IPlayer> players, Model game)
         {
-1            //Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place your {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
-             Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place your {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
-
+            Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place your {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
         }
 
+    }
 
-        public static int GetColumn()
+    public interface IPlayer
+    {
+        int PlayerOrder { get; set; }
+        string PlayerName { get; set; }
+        char PlayerSymbol { get; set; }
+
+        int GetColumn();
+    }
+
+    public class Human : IPlayer
+    {
+        public int PlayerOrder { get; set; }
+        public string PlayerName { get; set; }
+        public char PlayerSymbol { get; set; }
+
+        public Human(int order, string name)
+        {
+            PlayerOrder = order;
+            PlayerSymbol = (PlayerOrder == 1) ? 'X' : 'O';
+            PlayerName = name;
+        }
+
+        public int GetColumn()
         {
             int column = 0;
             while (column < 1 || column > 7)
@@ -96,42 +128,27 @@ namespace ConnectFour
         }
     }
 
-    abstract class Player
+    public class Computer : IPlayer
     {
-
         public int PlayerOrder { get; set; }
         public string PlayerName { get; set; }
         public char PlayerSymbol { get; set; }
-        public Player(int order)
+
+        public Computer(int order)
         {
             PlayerOrder = order;
             PlayerSymbol = (PlayerOrder == 1) ? 'X' : 'O';
-            PlayerName = "Computer"; // Default name
+            PlayerName = "Computer";
         }
 
-        // Abstract method (does not have a body)
-        public abstract void animalSound();
-        // Regular method
-        public void sleep()
+        public int GetColumn()
         {
-            Console.WriteLine("Zzz");
+            Random random = new Random();
+            int randomNumber = random.Next(1, 8); // generates a random integer between 1 and 7
+            return randomNumber;
         }
     }
 
-    class Human : Player
-    {
-        public Human(int order, string name) : base(order) { PlayerName = name; } //Constructor for Human with Name
-        public override void animalSound()
-        {
-            // The body of animalSound() is provided here
-            Console.WriteLine("The pig says: wee wee");
-        }
-    }
-
-    // class Computer : Player
-    // {
-    //     // Optional  
-    // }
 
     class Model
     {
@@ -156,7 +173,7 @@ namespace ConnectFour
             CurrentPlayer = 0;
         }
 
-        public void MakeMove(Player player, int column)
+        public void MakeMove(IPlayer player, int column)
         {   // [Done]
             column = column - 1;
             // If column is full, do nothing and return
@@ -242,7 +259,7 @@ namespace ConnectFour
     class Controller
     {
         private Model game;
-        private List<Player> players = new List<Player>();
+        private List<IPlayer> players = new List<IPlayer>();
         public Controller() { game = new Model(); } // Constructor
         public void Play()
         {
@@ -251,7 +268,15 @@ namespace ConnectFour
             // 1. StartScreen,Ask user 1P or 2P
             // 2. while !isGameOver, makeMove
             int NumOfPlayers = UserIO.StartScreen(); // Either 1 or 2
-            if (NumOfPlayers == 1) { }
+            if (NumOfPlayers == 1)
+            {
+                string userName = UserIO.getName(1);
+                players.Add(new Human(1, userName));
+                players.Add(new Computer(2));
+                foreach (var p in players) { Console.WriteLine($"{p.PlayerOrder}: {p.PlayerName} will go by {p.PlayerSymbol}"); }
+                Console.WriteLine("When you're ready, press enter to play.");
+                Console.ReadLine();
+            }
             else if (NumOfPlayers == 2)
             {
                 for (int i = 0; i < NumOfPlayers; i++)
@@ -268,13 +293,13 @@ namespace ConnectFour
             {
                 UserIO.PrintBoard(game);
                 UserIO.PrintTurn(players, game);
-                game.MakeMove(players[game.CurrentPlayer], UserIO.GetColumn());
+                game.MakeMove(players[game.CurrentPlayer], players[game.CurrentPlayer].GetColumn());
             } while (!game.IsGameOver());
 
             // Either Win or Tie
             UserIO.PrintBoard(game);
-            if (game.Winner != null) Console.WriteLine($"It is a Connect 4. {players[game.Winner.Value].PlayerName} Wins!"); // someone wins
-            else Console.WriteLine("Tie!"); // no one wins but game over: Tie
+            if (game.Winner != null) UserIO.PrintWinner(players[game.Winner.Value]); //Console.WriteLine($"It is a Connect 4. {players[game.Winner.Value].PlayerName} Wins!"); // someone wins
+            else UserIO.PrintTie(); // no one wins but game over: Tie
 
 
         }
@@ -291,26 +316,28 @@ namespace ConnectFour
             //The game must then return to the "start" screen, 
             //where a player can once again choose either 1-player mode or 2-player mode (Optional).
 
-            while (true)
+            bool start;
+
+            //public bool start = true;
+
+            do
             {
+                start = false;
+
                 Controller controller = new Controller();
                 controller.Play();
+                int s;
 
-                Console.Write("Restart? Yes(1) No(0): ");
-                Console.ReadKey(); // Todo: implement this line
-            }
+                Console.Write("Input 1 to restart");
+                s = int.Parse(Console.ReadLine());
+
+                if (s == 1)
+                {
+                    start = true;
+                }
+
+            } while (start == true);
         }
 
     }
 }
-
-
-
-
-
-
-
-
-
-// Problem:
-// playerorder has to be reset after every game

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/connectfour.csproj",
+      "projectUniqueName": "/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/connectfour.csproj",
       "projectName": "connectfour",
-      "projectPath": "/Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/connectfour.csproj",
+      "projectPath": "/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/connectfour.csproj",
       "packagesPath": "/Users/admin/.nuget/packages/",
-      "outputPath": "/Users/admin/Documents/BVC/2/SODV 1202/Final project/BJandCharley/obj/",
+      "outputPath": "/Users/admin/Documents/BVC/2/SODV 1202/finalProject/connect4Game/BJandCharley/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/admin/.nuget/NuGet/NuGet.Config"
