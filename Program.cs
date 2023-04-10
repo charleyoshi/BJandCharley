@@ -10,7 +10,7 @@ namespace ConnectFour
     class UserIO
     {// interacts and communicates via text input and Console output
 
-        // [DONE] StartScreen, PrintBoard
+        // StartScreen, PrintBoard, PrintWinner, PrintTie, getName, PrintTurn
         public static int StartScreen()
         {
             int playerCount = 0;
@@ -58,10 +58,9 @@ namespace ConnectFour
             Console.WriteLine("   1  2  3  4  5  6  7  ");
         }
 
-
-        public static void PrintWinner(IPlayer player)
+        public static void PrintWinner(Player player)
         {
-            Console.WriteLine($"Congratulations {player.PlayerName}, you won!");
+            Console.WriteLine($"It is a Connect 4. {player.PlayerName} Wins!");
         }
 
         public static void PrintTie()
@@ -69,9 +68,9 @@ namespace ConnectFour
             Console.WriteLine("Game is a Tie!");
         }
 
-        public static string getName(int order)
+        public static string getName(int? order = null)
         {
-            Console.Write($"Enter Player {order}\'s name: ");
+            Console.Write($"Enter {(order == null ? "your" : $"Player {order}\'s")} name: ");
             string name = "";
             while (name == "")
             {
@@ -80,36 +79,12 @@ namespace ConnectFour
             return name;
         }
 
-        public static void PrintTurn(List<IPlayer> players, Model game)
+        public static void PrintTurn(List<Player> players, Model game)
         {
-            Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place your {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
+            Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place the {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
         }
 
-    }
-
-    public interface IPlayer
-    {
-        int PlayerOrder { get; set; }
-        string PlayerName { get; set; }
-        char PlayerSymbol { get; set; }
-
-        int GetColumn();
-    }
-
-    public class Human : IPlayer
-    {
-        public int PlayerOrder { get; set; }
-        public string PlayerName { get; set; }
-        public char PlayerSymbol { get; set; }
-
-        public Human(int order, string name)
-        {
-            PlayerOrder = order;
-            PlayerSymbol = (PlayerOrder == 1) ? 'X' : 'O';
-            PlayerName = name;
-        }
-
-        public int GetColumn()
+        public static int PromptHumanColumn()
         {
             int column = 0;
             while (column < 1 || column > 7)
@@ -126,22 +101,41 @@ namespace ConnectFour
             }
             return column;
         }
+
     }
 
-    public class Computer : IPlayer
+    abstract class Player
     {
         public int PlayerOrder { get; set; }
         public string PlayerName { get; set; }
         public char PlayerSymbol { get; set; }
-
-        public Computer(int order)
+        public Player(int order)
         {
             PlayerOrder = order;
             PlayerSymbol = (PlayerOrder == 1) ? 'X' : 'O';
-            PlayerName = "Computer";
+            PlayerName = "Computer"; // Default name
         }
 
-        public int GetColumn()
+        public abstract int GetColumn();
+    }
+
+    class Human : Player
+    {
+        public Human(int order, string name) : base(order)
+        {
+            PlayerName = name;
+        }
+
+        public override int GetColumn()
+        {
+            return UserIO.PromptHumanColumn();
+        }
+    }
+
+    class Computer : Player
+    {
+        public Computer(int order) : base(order) { }
+        public override int GetColumn()
         {
             Random random = new Random();
             int randomNumber = random.Next(1, 8); // generates a random integer between 1 and 7
@@ -154,7 +148,7 @@ namespace ConnectFour
     {
         public char[,] Board { get; set; }
         public int CurrentPlayer { get; set; } // Either 0 or 1
-        private List<bool> IsColumnFull = new List<bool>();
+        private List<bool> IsColumnFull = new List<bool>(); // True if column is full
         public int? Winner { get; private set; } // Null if no winner 
         public Model()
         {
@@ -173,8 +167,8 @@ namespace ConnectFour
             CurrentPlayer = 0;
         }
 
-        public void MakeMove(IPlayer player, int column)
-        {   // [Done]
+        public void MakeMove(Player player, int column)
+        {
             column = column - 1;
             // If column is full, do nothing and return
             if (IsColumnFull[column])
@@ -195,7 +189,7 @@ namespace ConnectFour
         }
 
         public bool IsGameOver()
-        {   // [Done]
+        {
             // 1. Find Winner, 2. Check tie
             char CheckSymbol = (CurrentPlayer == 0) ? 'O' : 'X';    // Only check the symbol of the previous move
             if (HorizontalWin(CheckSymbol) || VertWin(CheckSymbol) || DiagWin(CheckSymbol) || CrossDiagWin(CheckSymbol))
@@ -249,7 +243,7 @@ namespace ConnectFour
         }
 
         private bool IsTie()
-        {   // [Done] Return true if all columns are full
+        {   // Return true if all columns are full
             return IsColumnFull.All(x => x);
         }
 
@@ -259,23 +253,23 @@ namespace ConnectFour
     class Controller
     {
         private Model game;
-        private List<IPlayer> players = new List<IPlayer>();
+        private List<Player> players = new List<Player>();
         public Controller() { game = new Model(); } // Constructor
         public void Play()
         {
-            // starting and running the game loop:
+            // Starting and running the game loop:
 
             // 1. StartScreen,Ask user 1P or 2P
             // 2. while !isGameOver, makeMove
             int NumOfPlayers = UserIO.StartScreen(); // Either 1 or 2
             if (NumOfPlayers == 1)
             {
-                string userName = UserIO.getName(1);
-                players.Add(new Human(1, userName));
-                players.Add(new Computer(2));
-                foreach (var p in players) { Console.WriteLine($"{p.PlayerOrder}: {p.PlayerName} will go by {p.PlayerSymbol}"); }
-                Console.WriteLine("When you're ready, press enter to play.");
-                Console.ReadLine();
+                string userName = UserIO.getName();
+                Random random = new Random();
+                int firstPlayer = random.Next(1, 3);
+                Console.WriteLine($"Randomly deciding who goes first... {(firstPlayer == 1 ? "Human" : "Computer")} will go first.");
+                players.Add(firstPlayer == 1 ? new Human(1, userName) : new Computer(1));
+                players.Add(firstPlayer == 1 ? new Computer(2) : new Human(2, userName));
             }
             else if (NumOfPlayers == 2)
             {
@@ -284,10 +278,10 @@ namespace ConnectFour
                     string userName = UserIO.getName(i + 1);
                     players.Add(new Human(i + 1, userName));
                 }
-                foreach (var p in players) { Console.WriteLine($"{p.PlayerOrder}: {p.PlayerName} will go by {p.PlayerSymbol}"); }
-                Console.WriteLine("When you're ready, press enter to play.");
-                Console.ReadLine();
             }
+            foreach (var p in players) { Console.WriteLine($"{p.PlayerOrder}: {p.PlayerName} will go by {p.PlayerSymbol}"); }
+            Console.WriteLine("When you're ready, press enter to play.");
+            Console.ReadLine();
 
             do  // PrintTurn, MakeMove
             {
@@ -300,8 +294,6 @@ namespace ConnectFour
             UserIO.PrintBoard(game);
             if (game.Winner != null) UserIO.PrintWinner(players[game.Winner.Value]); //Console.WriteLine($"It is a Connect 4. {players[game.Winner.Value].PlayerName} Wins!"); // someone wins
             else UserIO.PrintTie(); // no one wins but game over: Tie
-
-
         }
     }
 
@@ -310,34 +302,14 @@ namespace ConnectFour
     {
         static void Main(string[] args)
         {
-
-            //In either case, when the game ends, 
-            // the game should show some text indicating either who won or that the game was a draw. 
-            //The game must then return to the "start" screen, 
-            //where a player can once again choose either 1-player mode or 2-player mode (Optional).
-
-            bool start;
-
-            //public bool start = true;
-
-            do
+            string command = "";
+            while (command != "exit")
             {
-                start = false;
-
                 Controller controller = new Controller();
                 controller.Play();
-                int s;
-
-                Console.Write("Input 1 to restart");
-                s = int.Parse(Console.ReadLine());
-
-                if (s == 1)
-                {
-                    start = true;
-                }
-
-            } while (start == true);
+                Console.WriteLine("Press Enter to play again or type 'exit' to quit.    ");
+                command = Console.ReadLine();
+            }
         }
-
     }
 }
