@@ -10,9 +10,10 @@ namespace ConnectFour
     class UserIO
     {// interacts and communicates via text input and Console output
 
-        // StartScreen, PrintBoard, PrintWinner, PrintTie, getName, PrintTurn
+        // StartScreen, PrintBoard, PrintWinner, PrintTie, getName, PrintTurn, PromptHumanColumn
         public static int StartScreen()
         {
+            Console.Clear();
             int playerCount = 0;
             Console.WriteLine("Welcome to Connect Four! 1-Player or 2-Player?");
             while (playerCount != 1 && playerCount != 2)
@@ -27,7 +28,18 @@ namespace ConnectFour
 
         public static void PrintBoard(Model game)
         {
-            // Console.Clear();
+            Console.Clear();
+            PrintBoardUtil(game);
+        }
+        public static void PrintBoard(Model game, List<Player> players)
+        {
+            // On computer's move, stay on screen to enhance user experience
+            if (players[game.CurrentPlayer] is Human)
+                Console.Clear(); 
+            PrintBoardUtil(game);
+        }
+        public static void PrintBoardUtil(Model game)
+        {
             Console.WriteLine();
             for (int i = 0; i < game.Board.GetLength(0); i++)
             {
@@ -72,16 +84,22 @@ namespace ConnectFour
         {
             Console.Write($"Enter {(order == null ? "your" : $"Player {order}\'s")} name: ");
             string name = "";
-            while (name == "")
+            while (name.Trim() == "")
             {
                 name = Console.ReadLine();
             }
             return name;
         }
 
-        public static void PrintTurn(List<Player> players, Model game)
-        {
-            Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place the {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");
+        public static void PrintTurn(Model game, List<Player> players)
+        {   
+            if (players[game.CurrentPlayer] is Computer)
+            {
+                Console.WriteLine($"{players[game.CurrentPlayer].PlayerName} is thinking...It will place its {players[game.CurrentPlayer].PlayerSymbol} soon...");
+                Thread.Sleep(3000);
+            }
+            else
+                Console.Write($"It is {players[game.CurrentPlayer].PlayerName}'s turn. Place your {players[game.CurrentPlayer].PlayerSymbol} in a column 1-7: ");    
         }
 
         public static int PromptHumanColumn()
@@ -134,12 +152,21 @@ namespace ConnectFour
 
     class Computer : Player
     {
+        static Random random = new Random();
         public Computer(int order) : base(order) { }
         public override int GetColumn()
         {
-            Random random = new Random();
-            int randomNumber = random.Next(1, 8); // generates a random integer between 1 and 7
-            return randomNumber;
+            // Probability for [Column]:    40%[4]   30%[3 or 5]    20%[2 or 6]   10%[1 or 7]
+            // Cumulative Probability:      40%      70%            90%           100%
+            double probability = random.NextDouble();
+            if (probability < 0.4)
+                return 4;
+            else if (probability < 0.7)
+                return random.Next(0, 2) == 0 ? 3 : 5;
+            else if (probability < 0.9)
+                return random.Next(0, 2) == 0 ? 2 : 6;
+            else
+                return random.Next(0, 2) == 0 ? 1 : 7;
         }
     }
 
@@ -285,8 +312,8 @@ namespace ConnectFour
 
             do  // PrintTurn, MakeMove
             {
-                UserIO.PrintBoard(game);
-                UserIO.PrintTurn(players, game);
+                UserIO.PrintBoard(game, players);
+                UserIO.PrintTurn(game, players);
                 game.MakeMove(players[game.CurrentPlayer], players[game.CurrentPlayer].GetColumn());
             } while (!game.IsGameOver());
 
@@ -303,7 +330,7 @@ namespace ConnectFour
         static void Main(string[] args)
         {
             string command = "";
-            while (command != "exit")
+            while (command.Trim() != "exit")
             {
                 Controller controller = new Controller();
                 controller.Play();
